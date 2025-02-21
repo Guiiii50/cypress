@@ -18,7 +18,9 @@ class Login{
         cy.get('#login-button').click()
     }
     submit_error() {
+        cy.get('#login-button').click()
         cy.get("h3[data-test='error']").contains('Sorry, this user has been locked out.')
+        cy.log("Le message d'erreur apparait")
     }
 }
 
