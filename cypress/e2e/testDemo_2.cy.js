@@ -1,26 +1,82 @@
-import Login from "./Demo/PogeObject/login";
+//controlleur 
 
-describe('cypress POM test', function() {
+import  {Login, addPrice1, ConnexF,formulaire} from "./login";
 
-    it("Login avec un username et un mot de passe invalide", function() {
-        const loginpage = new Login()
 
-        loginpage.navigate()
-        loginpage.username('locked_out_user')
-        loginpage.Password('secret_sauce')
-        loginpage.submit_error()
-        cy.url().should('be.equal', 'https://www.saucedemo.com/v1/')
-    })
+// IMPORTE CETTE CLASSE la de ce dossier 
+
+
+describe('Cypress POM Test Suite', function () {
+
+
+    beforeEach(() => {
+        cy.visit('/');
+        cy.fixture('example').as('userData');
+      });
+
+        it.skip('Login avec un email et mot de passe valide', function()  {
+            
+            // tu crées un constante pour recuperer tous les elements dans objet Login de la page login.js
+            const loginpage = new Login();
+            // Login cest un objet / j'instancie de la classe
+        
+            loginpage.navigate();
+          
+            // standard_user =  valeur du paramettre qu'on a mis dans la fonction email
+            loginpage.email('standard_user');
+            loginpage.password('secret_sauce');
+            loginpage.submit();
+            cy.url().should('be.equal','https://www.saucedemo.com/v1/inventory.html');
+            cy.wait(1000)
+
+
+        });
+
+
+        it('Login avec un email non valide et mot de passe valide', function()  {
+        
+            const loginFpage = new Login();
+            // j'instancie de la classe
     
-    it("Login avec un username et un mot de passe valide", function() {
-        const loginpage = new Login()
+            loginFpage.navigate();
+            loginFpage.email('locked_out_user');
+            loginFpage.password('secret_sauce');
+            loginFpage.submit();
+            // cy.url().should('be.equal','https://www.saucedemo.com/v1/');
 
-        loginpage.navigate()
-        loginpage.username('standard_user')
-        loginpage.Password('secret_sauce')
-        loginpage.submit()
-        cy.url().should('be.equal', 'https://www.saucedemo.com/v1/inventory.html')
-    })
+            const connexp = new ConnexF();
+
+            cy.get('#login-button').click()
+            cy.get('h3[data-test="error"]').contains('Sorry, this user has been locked out.').should('be.visible')
+            cy.wait(1000)
+        });
 
 
-})
+
+        it.skip('ajouter Panier', function () {
+
+            const loginpage = new Login();
+            loginpage.email('standard_user');
+            loginpage.password('secret_sauce');
+            loginpage.submit();
+
+            const addpanier = new addPrice1();
+            addpanier.addPrice();
+            cy.wait(1000)
+        });
+
+
+        it('remplir form', function() {
+            const loginpage = new Login();
+            loginpage.email('standard_user');
+            loginpage.password('secret_sauce');
+            loginpage.submit();
+            const addpanier = new addPrice1();
+            addpanier.addPrice();
+        
+            const form = new formulaire();
+            form.form(this.userData.user.firstName, this.userData.user.lastname, this.userData.user.postalCcode);
+            cy.wait(1000)             
+        });
+    
+        });
