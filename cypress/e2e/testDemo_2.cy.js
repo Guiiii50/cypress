@@ -12,7 +12,7 @@ describe('Cypress POM Test Suite', function () {
     beforeEach(() => {
         cy.visit('/');
         cy.fixture('example').as('userData');
-      });
+        });
 
         it.skip('Login avec un email et mot de passe valide', function()  {
             
@@ -28,8 +28,6 @@ describe('Cypress POM Test Suite', function () {
             loginpage.submit();
             cy.url().should('be.equal','https://www.saucedemo.com/v1/inventory.html');
             cy.wait(1000)
-
-
         });
 
 
